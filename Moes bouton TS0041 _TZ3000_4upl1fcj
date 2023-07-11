@@ -1,0 +1,52 @@
+blueprint:
+  name: Zigbee2MQTT - Moes Button Scene Switch
+  description: Automate your Moes Button Scene Switch via Zigbee2MQTT.
+  domain: automation
+  input:
+    switch:
+      name: Moes Button Scene Switch
+      description: Moes Button Scene Switch to use
+      selector:
+        entity:
+          integration: mqtt
+          domain: sensor
+    button_short_press:
+      name: Single Press - Button
+      description: Action to run on button single press
+      default: []
+      selector:
+        action: {}
+    button_double_press:
+      name: Double Press - Button
+      description: Action to run on button double press
+      default: []
+      selector:
+        action: {}
+    button_long_press:
+      name: Long Press - Button
+      description: Action to run on button long press
+      default: []
+      selector:
+        action: {}
+
+mode: restart
+max_exceeded: silent
+trigger:
+- platform: state
+  entity_id: !input "switch"
+  attribute: action
+action:
+- variables:
+    command: "{{ trigger.to_state.state }}"
+- choose:
+  - conditions: 
+    - "{{ command == 'single' }}"
+    sequence: !input "button_short_press"
+
+  - conditions: 
+    - "{{ command == 'double' }}"
+    sequence: !input "button_double_press"
+
+  - conditions: 
+    - "{{ command == 'hold' }}"
+    sequence: !input "button_long_press"
