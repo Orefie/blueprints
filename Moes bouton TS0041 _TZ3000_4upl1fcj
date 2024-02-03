@@ -40,13 +40,13 @@ action:
     command: "{{ trigger.to_state.state }}"
 - choose:
   - conditions: 
-    - "{{ command == 'single' }}"
+    - "{{ command == '1_single' }}"
     sequence: !input "button_short_press"
 
   - conditions: 
-    - "{{ command == 'double' }}"
+    - "{{ command == '1_double' }}"
     sequence: !input "button_double_press"
 
   - conditions: 
-    - "{{ command == 'hold' }}"
+    - "{{ command == '1_hold' }}"
     sequence: !input "button_long_press"
